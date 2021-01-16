@@ -1,4 +1,4 @@
-body {
+.container {
   border: 10px solid #0881a3;
   background-color: #f7e9e3;
   font-family: Optima, Courier, monospace;
@@ -83,5 +83,6 @@ input {
   color: #212121;
 }
 footer {
+  text-align: center;
   padding-bottom: 20px;
 }
