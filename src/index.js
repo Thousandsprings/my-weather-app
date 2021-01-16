@@ -121,7 +121,7 @@ function showCurrentLocation(location) {
     currentTime.innerHTML = `${hour}:${min}`;
     //location temperature
     let currentTemp = document.getElementById("current-temperature");
-    currentTemp.innerHTML = locationInfo.data.main.temp;
+    currentTemp.innerHTML = Math.round(locationInfo.data.main.temp);
   }
 
   axios.get(apiUrl).then(writeCurrentLocationInfo);
