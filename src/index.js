@@ -80,7 +80,7 @@ function showWeather(response) {
   let latitude = response.data.coord.lat;
   let longitude = response.data.coord.lon;
 
-  let localTimeApiUrl = `http://api.timezonedb.com/v2.1/get-time-zone?key=${localTimeApiKey}&format=json&by=position&lat=${latitude}&lng=${longitude}`;
+  let localTimeApiUrl = `https://api.timezonedb.com/v2.1/get-time-zone?key=${localTimeApiKey}&format=json&by=position&lat=${latitude}&lng=${longitude}`;
   axios.get(localTimeApiUrl).then(showLocalTime);
 }
 
