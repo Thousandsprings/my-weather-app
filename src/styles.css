@@ -34,6 +34,9 @@ h2 li {
   text-decoration: none;
   color: #212121;
 }
+#current-location-date {
+  margin-top: 0px;
+}
 .temp {
   text-decoration: none;
 }
