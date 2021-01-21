@@ -27,6 +27,7 @@ let monthes = [
   "Nov",
   "Dec",
 ];
+//header
 let month = monthes[monthNum];
 let year = now.getFullYear();
 let dateHtml = document.getElementById("date-in-html");
@@ -53,15 +54,6 @@ function showWeather(response) {
   const showCity = document.getElementById("current-city");
   showCity.innerHTML = cityName;
 
-  //change icon
-  const iconHtml = document.getElementById("weather-now");
-  iconHtml.setAttribute(
-    "src",
-    `https://openweathermap.org/img/wn/${icon}@2x.png`
-  );
-  let currentWeatherHtml = document.getElementById("current-weather");
-  currentWeatherHtml.innerHTML = weatherDescription;
-
   //show local time
   function showLocalTime(response) {
     console.log(response.data.formatted); //local date and time
@@ -85,6 +77,7 @@ function showWeather(response) {
   //show temperature
   const showTemp = document.getElementById("current-temperature");
   showTemp.innerHTML = temperature;
+
   //convert temperature
   let celsius = document.getElementById("celsius");
   let fahrenheit = document.getElementById("fahrenheit");
@@ -97,19 +90,28 @@ function showWeather(response) {
   }
   celsius.addEventListener("click", convertCelsius);
   fahrenheit.addEventListener("click", convertFahrenheit);
-}
+  //change icon
+  console.log(icon);
+  const iconHtml = document.getElementById("weather-now");
+  iconHtml.setAttribute(
+    "src",
+    `https://openweathermap.org/img/wn/${icon}@2x.png`
+  );
+  let currentWeatherHtml = document.getElementById("current-weather");
+  currentWeatherHtml.innerHTML = weatherDescription;
 
-function search() {
-  //   console.log(searchCity.value);
-  let city = searchCity.value;
-  let apiKey = "ac021ab78099db15d109c8b194975aa6";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&&units=metric`;
-  axios.get(apiUrl).then(showWeather);
+  function search() {
+    //   console.log(searchCity.value);
+    let city = searchCity.value;
+    let apiKey = "ac021ab78099db15d109c8b194975aa6";
+    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&&units=metric`;
+    axios.get(apiUrl).then(showWeather);
+  }
 }
 
 searchBtn.addEventListener("click", search);
 
-//show the info in the local location
+//show the info in the current location
 function showCurrentLocation(location) {
   //   console.log(location);    location info
   let lat = location.coords.latitude;
@@ -133,9 +135,34 @@ function showCurrentLocation(location) {
       min = `0${min}`;
     }
     currentTime.innerHTML = `${hour}:${min}`;
-    //location temperature
-    let currentTemp = document.getElementById("current-temperature");
-    currentTemp.innerHTML = Math.round(locationInfo.data.main.temp);
+    //show location temperature
+    let temperature = Math.round(locationInfo.data.main.temp);
+    const showTemp = document.getElementById("current-temperature");
+    showTemp.innerHTML = temperature;
+
+    //convert temperature
+    let celsius = document.getElementById("celsius");
+    let fahrenheit = document.getElementById("fahrenheit");
+
+    function convertCelsius() {
+      showTemp.innerHTML = temperature;
+    }
+    function convertFahrenheit() {
+      showTemp.innerHTML = Math.round(temperature * 1.8 + 32);
+    }
+    celsius.addEventListener("click", convertCelsius);
+    fahrenheit.addEventListener("click", convertFahrenheit);
+
+    //change icon
+    let icon = locationInfo.data.weather[0].icon;
+    let weatherDescription = locationInfo.data.weather[0].description;
+    const iconHtml = document.getElementById("weather-now");
+    iconHtml.setAttribute(
+      "src",
+      `https://openweathermap.org/img/wn/${icon}@2x.png`
+    );
+    let currentWeatherHtml = document.getElementById("current-weather");
+    currentWeatherHtml.innerHTML = weatherDescription;
   }
 
   axios.get(apiUrl).then(writeCurrentLocationInfo);
