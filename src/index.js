@@ -49,13 +49,11 @@ function showWeather(response) {
   console.log(weatherDescription); //weather
   console.log(windSpeed); //windspeed
 
-  //change city name, time, temperature
+  //change city name
   const showCity = document.getElementById("current-city");
   showCity.innerHTML = cityName;
-  const showTemp = document.getElementById("current-temperature");
-  showTemp.innerHTML = temperature;
 
-  //change icons
+  //change icon
   const iconHtml = document.getElementById("weather-now");
   iconHtml.setAttribute(
     "src",
@@ -63,6 +61,7 @@ function showWeather(response) {
   );
   let currentWeatherHtml = document.getElementById("current-weather");
   currentWeatherHtml.innerHTML = weatherDescription;
+
   //show local time
   function showLocalTime(response) {
     console.log(response.data.formatted); //local date and time
@@ -82,6 +81,22 @@ function showWeather(response) {
 
   let localTimeApiUrl = `https://api.timezonedb.com/v2.1/get-time-zone?key=${localTimeApiKey}&format=json&by=position&lat=${latitude}&lng=${longitude}`;
   axios.get(localTimeApiUrl).then(showLocalTime);
+
+  //show temperature
+  const showTemp = document.getElementById("current-temperature");
+  showTemp.innerHTML = temperature;
+  //convert temperature
+  let celsius = document.getElementById("celsius");
+  let fahrenheit = document.getElementById("fahrenheit");
+
+  function convertCelsius() {
+    showTemp.innerHTML = temperature;
+  }
+  function convertFahrenheit() {
+    showTemp.innerHTML = Math.round(temperature * 1.8 + 32);
+  }
+  celsius.addEventListener("click", convertCelsius);
+  fahrenheit.addEventListener("click", convertFahrenheit);
 }
 
 function search() {
@@ -94,8 +109,7 @@ function search() {
 
 searchBtn.addEventListener("click", search);
 
-//show the info in the current location
-
+//show the info in the local location
 function showCurrentLocation(location) {
   //   console.log(location);    location info
   let lat = location.coords.latitude;
