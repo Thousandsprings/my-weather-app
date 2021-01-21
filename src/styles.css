@@ -28,7 +28,7 @@ h2 ul {
   padding-left: 0;
 }
 h2 li {
-  margin-top: 50px;
+  margin-top: 40px;
   display: block;
   text-align: center;
   text-decoration: none;
@@ -57,15 +57,20 @@ input {
   margin-bottom: 100px;
   display: inline-block;
   text-align: center;
-  line-height: 300px;
-  background-color: #fffdfb;
+  line-height: 20px;
+  background: linear-gradient(
+    0deg,
+    rgba(34, 90, 195, 0.9682247899159664) 0%,
+    rgba(45, 135, 253, 0.21192226890756305) 79%
+  );
 }
-#WeatherNow {
-  color: #0881a3;
-  font-size: 200px;
-  margin-top: 50px;
+#weather-now {
+  width: 250px;
 }
-
+#current-weather {
+  font-size: 20px;
+  color: #fff;
+}
 .circle {
   display: inline-block;
   width: 150px;

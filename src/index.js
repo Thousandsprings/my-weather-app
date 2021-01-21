@@ -42,18 +42,12 @@ function showWeather(response) {
   let temperature = Math.round(response.data.main.temp);
   let weatherDescription = response.data.weather[0].description;
   let windSpeed = response.data.wind.speed;
+  let icon = response.data.weather[0].icon;
 
   console.log(cityName); //city name
   console.log(temperature); //temperature
   console.log(weatherDescription); //weather
   console.log(windSpeed); //windspeed
-
-  //   let weatherArray = [
-  //     {
-  //       weather: "overcast clouds",
-  //       icon: "fas fa-snowman",
-  //     },
-  //   ];
 
   //change city name, time, temperature
   const showCity = document.getElementById("current-city");
@@ -62,7 +56,13 @@ function showWeather(response) {
   showTemp.innerHTML = temperature;
 
   //change icons
-
+  const iconHtml = document.getElementById("weather-now");
+  iconHtml.setAttribute(
+    "src",
+    `https://openweathermap.org/img/wn/${icon}@2x.png`
+  );
+  let currentWeatherHtml = document.getElementById("current-weather");
+  currentWeatherHtml.innerHTML = weatherDescription;
   //show local time
   function showLocalTime(response) {
     console.log(response.data.formatted); //local date and time
