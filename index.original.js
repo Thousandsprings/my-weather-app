@@ -37,60 +37,16 @@ dateHtml.innerHTML = `${weekday}, ${date}. ${month}, ${year}(Current location)`;
 let searchCity = document.getElementById("city-name");
 let searchBtn = document.getElementById("search-button");
 
-//show local time
-function showLocalTime(response) {
-  console.log(response.data.formatted); //local date and time
-  // console.log(response.data.formatted.slice(11, 16)); //local time
-  const localTime = document.getElementById("current-time");
-  let localTimeStamp = response.data.formatted;
-  localTime.innerHTML = localTimeStamp.slice(11, 16);
-  let currentLocationDate = document.getElementById("current-location-date");
-  currentLocationDate.innerHTML = `${localTimeStamp.slice(
-    8,
-    10
-  )}/${localTimeStamp.slice(5, 7)}/${localTimeStamp.slice(0, 4)}(Local Time)`;
-}
-
-//convert Temperature
-//convert to celsius
-function convertCelsius(event) {
-  event.preventDefault();
-  let showTemp = document.getElementById("current-temperature");
-  celsiusTemperature = Math.round(celsiusTemperature);
-  showTemp.innerHTML = celsiusTemperature;
-
-  celsius.classList.add("active");
-  fahrenheit.classList.remove("active");
-}
-//convert to fahrenheit
-function convertFahrenheit(event) {
-  event.preventDefault();
-  let showTemp = document.getElementById("current-temperature");
-  celsiusTemperature = Math.round(celsiusTemperature);
-  showTemp.innerHTML = Math.round(celsiusTemperature * 1.8 + 32);
-
-  fahrenheit.classList.add("active");
-  celsius.classList.remove("active");
-}
-let celsius = document.getElementById("celsius");
-let fahrenheit = document.getElementById("fahrenheit");
-
-celsius.addEventListener("click", convertCelsius);
-fahrenheit.addEventListener("click", convertFahrenheit);
-
-// let celsiusTemperature = null;
-
 function showWeather(response) {
   console.log(response);
   let cityName = response.data.name;
+  let temperature = Math.round(response.data.main.temp);
   let weatherDescription = response.data.weather[0].description;
   let windSpeed = response.data.wind.speed;
   let icon = response.data.weather[0].icon;
 
-  celsiusTemperature = Math.round(response.data.main.temp);
-
   console.log(cityName); //city name
-  console.log(celsiusTemperature); //celsiusTemperature
+  console.log(temperature); //temperature
   console.log(weatherDescription); //weather
   console.log(windSpeed); //windspeed
 
@@ -98,17 +54,42 @@ function showWeather(response) {
   const showCity = document.getElementById("current-city");
   showCity.innerHTML = cityName;
 
-  //Local Time
+  //show local time
+  function showLocalTime(response) {
+    console.log(response.data.formatted); //local date and time
+    // console.log(response.data.formatted.slice(11, 16)); //local time
+    const localTime = document.getElementById("current-time");
+    let localTimeStamp = response.data.formatted;
+    localTime.innerHTML = localTimeStamp.slice(11, 16);
+    let currentLocationDate = document.getElementById("current-location-date");
+    currentLocationDate.innerHTML = `${localTimeStamp.slice(
+      8,
+      10
+    )}/${localTimeStamp.slice(5, 7)}/${localTimeStamp.slice(0, 4)}(Local Time)`;
+  }
   let localTimeApiKey = "KTPS14XG8OUY";
   let latitude = response.data.coord.lat;
   let longitude = response.data.coord.lon;
+
   let localTimeApiUrl = `https://api.timezonedb.com/v2.1/get-time-zone?key=${localTimeApiKey}&format=json&by=position&lat=${latitude}&lng=${longitude}`;
   axios.get(localTimeApiUrl).then(showLocalTime);
 
-  //show Temperature
-  let showTemp = document.getElementById("current-temperature");
-  showTemp.innerHTML = celsiusTemperature;
+  //show temperature
+  const showTemp = document.getElementById("current-temperature");
+  showTemp.innerHTML = temperature;
 
+  //convert temperature
+  let celsius = document.getElementById("celsius");
+  let fahrenheit = document.getElementById("fahrenheit");
+
+  function convertCelsius() {
+    showTemp.innerHTML = temperature;
+  }
+  function convertFahrenheit() {
+    showTemp.innerHTML = Math.round(temperature * 1.8 + 32);
+  }
+  celsius.addEventListener("click", convertCelsius);
+  fahrenheit.addEventListener("click", convertFahrenheit);
   //change icon
   console.log(icon);
   const iconHtml = document.getElementById("weather-now");
@@ -118,14 +99,14 @@ function showWeather(response) {
   );
   let currentWeatherHtml = document.getElementById("current-weather");
   currentWeatherHtml.innerHTML = weatherDescription;
-}
 
-function search() {
-  //   console.log(searchCity.value);
-  let city = searchCity.value;
-  let apiKey = "ac021ab78099db15d109c8b194975aa6";
-  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&&units=metric`;
-  axios.get(apiUrl).then(showWeather);
+  function search() {
+    //   console.log(searchCity.value);
+    let city = searchCity.value;
+    let apiKey = "ac021ab78099db15d109c8b194975aa6";
+    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&&units=metric`;
+    axios.get(apiUrl).then(showWeather);
+  }
 }
 
 searchBtn.addEventListener("click", search);
@@ -154,20 +135,20 @@ function showCurrentLocation(location) {
       min = `0${min}`;
     }
     currentTime.innerHTML = `${hour}:${min}`;
-    //show location Temperature
-    let celsiusTemperature = Math.round(locationInfo.data.main.temp);
+    //show location temperature
+    let temperature = Math.round(locationInfo.data.main.temp);
     const showTemp = document.getElementById("current-temperature");
-    showTemp.innerHTML = celsiusTemperature;
+    showTemp.innerHTML = temperature;
 
-    //convert Temperature
+    //convert temperature
     let celsius = document.getElementById("celsius");
     let fahrenheit = document.getElementById("fahrenheit");
 
     function convertCelsius() {
-      showTemp.innerHTML = celsiusTemperature;
+      showTemp.innerHTML = temperature;
     }
     function convertFahrenheit() {
-      showTemp.innerHTML = Math.round(celsiusTemperature * 1.8 + 32);
+      showTemp.innerHTML = Math.round(temperature * 1.8 + 32);
     }
     celsius.addEventListener("click", convertCelsius);
     fahrenheit.addEventListener("click", convertFahrenheit);
