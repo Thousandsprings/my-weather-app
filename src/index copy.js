@@ -94,16 +94,54 @@ function showForecast(response) {
   let maxTemp = null;
   let minTemp = null;
 
+  //現地時間の曜日を表示
+  function showWeekdays(weekDays) {
+    console.log(weekDays); //local data
+    let wDay = new Date(weekDays.data.formatted);
+    let wDayNum = wDay.getDay();
+    console.log(wDayNum); //weekday number
+
+    let week = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    for (let index = 1; index < 7; index++) {
+      let weekDayHtml = document.getElementById("weekDay");
+      weekDayHtml.innerHTML += `${week[wDayNum + index]}`;
+      console.log(weekDayHtml);
+    }
+  }
+  ////////////////////////////
   for (let index = 1; index < 7; index++) {
     forecast = response.data.daily[index];
     maxTemp = Math.round(response.data.daily[index].temp.max);
     minTemp = Math.round(response.data.daily[index].temp.min);
 
-    forecastElements.innerHTML += `<div class="circle col-md-1"><p id="weekDay">${index}-day-later</p>
+    forecastElements.innerHTML += `<div class="circle col-md-1">
     <img id="imgForecast" src="https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png"/>
     <h3>${maxTemp}℃/${minTemp}℃</h3>
     </div>`;
   }
+
+  //Local time
+  let localTimeApiKey = "KTPS14XG8OUY";
+  let latitude = response.data.lat;
+  console.log(latitude);
+  let longitude = response.data.lon;
+  let localTimeApiUrl = `https://api.timezonedb.com/v2.1/get-time-zone?key=${localTimeApiKey}&format=json&by=position&lat=${latitude}&lng=${longitude}`;
+  axios.get(localTimeApiUrl).then(showWeekdays);
 }
 
 function showWeather(response) {
@@ -205,13 +243,6 @@ function showCurrentLocation(location) {
     );
     let currentWeatherHtml = document.getElementById("current-weather");
     currentWeatherHtml.innerHTML = weatherDescription;
-
-    //forecast
-    let apiKey = "ac021ab78099db15d109c8b194975aa6";
-    let lat = locationInfo.data.coord.lat;
-    let lon = locationInfo.data.coord.lon;
-    apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
-    axios.get(apiUrl).then(showForecast);
   }
 
   axios.get(apiUrl).then(writeCurrentLocationInfo);

@@ -16,8 +16,7 @@
   </head>
   <body>
     <div class="container">
-      <header></header>
-      <h1 id="date-in-html">Thursday, 10.Dec, 2020</h1>
+      <h1 id="date-in-html"></h1>
       </header>
       <div class="row justify-content-center" id="search">
       
@@ -36,7 +35,7 @@
             <ul>
               <li id="current-city">City</li>
               <li id="current-time">Time</li>
-              <li id="current-location-date">(local time)</li>
+              <li id="local-time"></li>
               <li>
               <span id ="current-temperature"">Temperature</span>
                   <a href="#" class="temp active" id="celsius">℃</a>/
@@ -49,44 +48,16 @@
           <img src= "" alt="" id="weather-now"></img>
           <p id="current-weather"></p>
         </div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="circle col-md-1">
-          <p class="WeekDay">Fri.</p>
-          <i class="fas fa-sun"></i>
-          <h3>10℃</h3>
-        </div>
-        <div class="circle col-md-1">
-          <p class="WeekDay">Sat.</p>
-          <i class="fas fa-cloud-sun"></i>
-          <h3>3℃</h3>
-        </div>
-        <div class="circle col-md-1">
-          <p class="WeekDay">Sun.</p>
-          <i class="fas fa-sun"></i>
-          <h3>1℃</h3>
-        </div>
-        <div class="circle col-md-1">
-          <p class="WeekDay">Mon.</p>
-          <i class="fas fa-cloud-sun-rain"></i>
-          <h3>-1℃</h3>
-        </div>
-        <div class="circle col-md-1">
-          <p class="WeekDay">Tue.</p>
-          <i class="fas fa-cloud-showers-heavy"></i>
-          <h3>5℃</h3>
-        </div>
-        <div class="circle col-md-1">
-          <p class="WeekDay">Wed.</p>
-          <i class="fas fa-cloud-showers-heavy"></i>
-          <h3>3℃</h3>
-        </div>
+      <!-- </div><p id="weekDay"></p> -->
+      <div class="row justify-content-center" id="forecast">
       </div>
     </div>
-      <footer>
+    
+    <footer>
         This project was coded by 
         <a href="https://www.linkedin.com/in/chiharu-suzuki-915130201/" target="_">Chiharu Suzuki (linkedin)</a> ,is <a href="https://github.com/Thousandsprings/my-weather-app" target="_">open-sourced on GitHub</a> and hosted on <a href="https://www.netlify.com/" target="_">Netlify</a>
-      </footer>
+    </footer>
+    
     <script src="src/index.js"></script>
     <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/all.js"></script>
   </body>
