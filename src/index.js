@@ -182,7 +182,7 @@ function showCurrentLocation(location) {
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&&units=metric`;
 
   function writeCurrentLocationInfo(locationInfo) {
-    // console.log(locationInfo);
+    console.log(locationInfo);
     //location
     let currentCity = document.getElementById("current-city");
     currentCity.innerHTML = locationInfo.data.name;
@@ -204,6 +204,16 @@ function showCurrentLocation(location) {
     celsiusTemperature = Math.round(locationInfo.data.main.temp);
     let showTemp = document.getElementById("current-temperature");
     showTemp.innerHTML = celsiusTemperature;
+
+    //show wind speed
+    let windSpeed = locationInfo.data.wind.speed;
+    let windSpeedHtml = document.getElementById("wind-speed");
+    windSpeedHtml.innerHTML = `Wind speed: ${windSpeed}m/sec.`;
+
+    //show humidity
+    let humidity = locationInfo.data.main.humidity;
+    let humidityHtml = document.getElementById("humidity");
+    humidityHtml.innerHTML = `Humidity: ${humidity}%`;
 
     //change icon
     let icon = locationInfo.data.weather[0].icon;
