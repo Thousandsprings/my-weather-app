@@ -83,7 +83,7 @@ let celsiusTemperature = null;
 
 //show forcast
 function showForecast(response) {
-  console.log(response); //weekly forcast
+  // console.log(response); //weekly forcast
   //change icons
   let forecastElements = document.getElementById("forecast");
   forecastElements.innerHTML = null;
@@ -111,14 +111,16 @@ function showWeather(response) {
   let cityName = response.data.name;
   let weatherDescription = response.data.weather[0].description;
   let windSpeed = response.data.wind.speed;
+  let humidity = response.data.main.humidity;
   let icon = response.data.weather[0].icon;
 
   celsiusTemperature = Math.round(response.data.main.temp);
 
-  console.log(cityName); //city name
-  console.log(celsiusTemperature); //celsiusTemperature
-  console.log(weatherDescription); //weather
-  console.log(windSpeed); //windspeed
+  console.log(`city name is ${cityName}`); //city name
+  console.log(`celsius temperature is ${celsiusTemperature}`); //celsiusTemperature
+  console.log(`weather is ${weatherDescription}`); //weather
+  console.log(`wind speed is ${windSpeed}`); //windspeed
+  console.log(`humidity is ${humidity}`); //humidity
 
   //change city name
   const showCity = document.getElementById("current-city");
@@ -134,6 +136,14 @@ function showWeather(response) {
   //show Temperature
   let showTemp = document.getElementById("current-temperature");
   showTemp.innerHTML = celsiusTemperature;
+
+  //show wind speed
+  let windSpeedHtml = document.getElementById("wind-speed");
+  windSpeedHtml.innerHTML = `Wind speed: ${windSpeed}m/sec.`;
+
+  //show humidity
+  let humidityHtml = document.getElementById("humidity");
+  humidityHtml.innerHTML = `Humidity: ${humidity}%`;
 
   //change icon
   // console.log(icon);
@@ -172,7 +182,7 @@ function showCurrentLocation(location) {
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&&units=metric`;
 
   function writeCurrentLocationInfo(locationInfo) {
-    console.log(locationInfo);
+    // console.log(locationInfo);
     //location
     let currentCity = document.getElementById("current-city");
     currentCity.innerHTML = locationInfo.data.name;
