@@ -81,31 +81,6 @@ fahrenheit.addEventListener("click", convertFahrenheit);
 
 let celsiusTemperature = null;
 
-//show forcast
-function showForecast(response) {
-  // console.log(response); //weekly forcast
-  //change icons
-  let forecastElements = document.getElementById("forecast");
-  forecastElements.innerHTML = null;
-
-  let forecast = null;
-
-  //Temperature
-  let maxTemp = null;
-  let minTemp = null;
-
-  for (let index = 1; index < 7; index++) {
-    forecast = response.data.daily[index];
-    maxTemp = Math.round(response.data.daily[index].temp.max);
-    minTemp = Math.round(response.data.daily[index].temp.min);
-
-    forecastElements.innerHTML += `<div class="circle col-md-1"><p id="weekDay">${index}-day-later</p>
-    <img id="imgForecast" src="https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png"/>
-    <h3>${maxTemp}℃/${minTemp}℃</h3>
-    </div>`;
-  }
-}
-
 function showWeather(response) {
   console.log(response);
   let cityName = response.data.name;
@@ -116,11 +91,10 @@ function showWeather(response) {
 
   celsiusTemperature = Math.round(response.data.main.temp);
 
-  console.log(`city name is ${cityName}`); //city name
-  console.log(`celsius temperature is ${celsiusTemperature}`); //celsiusTemperature
-  console.log(`weather is ${weatherDescription}`); //weather
-  console.log(`wind speed is ${windSpeed}`); //windspeed
-  console.log(`humidity is ${humidity}`); //humidity
+  console.log(cityName); //city name
+  console.log(celsiusTemperature); //celsiusTemperature
+  console.log(weatherDescription); //weather
+  console.log(windSpeed); //windspeed
 
   //change city name
   const showCity = document.getElementById("current-city");
@@ -137,14 +111,13 @@ function showWeather(response) {
   let showTemp = document.getElementById("current-temperature");
   showTemp.innerHTML = celsiusTemperature;
 
-  //show wind speed
-  let windSpeedHtml = document.getElementById("wind-speed");
-  windSpeedHtml.innerHTML = `Wind speed: ${windSpeed}m/sec.`;
+  //show Wind speed
+  let showWindSpeed = document.getElementById("wind-speed");
+  showWindSpeed.innerHTML = `Wind speed: ${windSpeed}m/s`;
 
-  //show humidity
-  let humidityHtml = document.getElementById("humidity");
-  humidityHtml.innerHTML = `Humidity: ${humidity}%`;
-
+  //show Humidity
+  let showHumidity = document.getElementById("humidity");
+  showHumidity.innerHTML = `Humidity: ${humidity}%`;
   //change icon
   // console.log(icon);
   const iconHtml = document.getElementById("weather-now");
@@ -163,6 +136,73 @@ function showWeather(response) {
   axios.get(apiUrl).then(showForecast);
 }
 
+//show forecast
+function showForecast(response) {
+  console.log(response); //weekly forecast
+  //change icons
+  let forecastElements = document.getElementById("forecast");
+  forecastElements.innerHTML = null;
+
+  let forecast = null;
+
+  //Temperature
+  let maxTemp = null;
+  let minTemp = null;
+
+  //Local time
+  let localTimeApiKey = "KTPS14XG8OUY";
+  let latitude = response.data.lat;
+  // console.log(latitude);
+  let longitude = response.data.lon;
+  let localTimeApiUrl = `https://api.timezonedb.com/v2.1/get-time-zone?key=${localTimeApiKey}&format=json&by=position&lat=${latitude}&lng=${longitude}`;
+  axios.get(localTimeApiUrl).then(showWeekdaysForecast).then(displayForecast);
+
+  //show the day of a week in local time
+  function showWeekdaysForecast(weekDays) {
+    // console.log(weekDays); //local data
+    let wDay = new Date(weekDays.data.formatted);
+    // console.log(wDay);
+    wDayNum = wDay.getDay();
+    // console.log(wDayNum); //weekday number
+    return wDayNum;
+  }
+
+  function displayForecast() {
+    let weekdays = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+    let weekDay = document.getElementById("weekDay");
+    weekDay.innerHTML = null;
+
+    for (let index = 1; index < 7; index++) {
+      forecast = response.data.daily[index];
+      maxTemp = Math.round(response.data.daily[index].temp.max);
+      minTemp = Math.round(response.data.daily[index].temp.min);
+
+      forecastElements.innerHTML += `<div class="circle col-md-1">
+    <div class=col-md-1" id="weekDay">${weekdays[wDayNum + index]}</div >
+    <img id="imgForecast" src="https://openweathermap.org/img/wn/${
+      forecast.weather[0].icon
+    }@2x.png"/>
+    <h3>${maxTemp}℃/${minTemp}℃</h3>
+    </div>`;
+    }
+  }
+}
+
 function search() {
   //   console.log(searchCity.value);
   let city = searchCity.value;
@@ -170,7 +210,6 @@ function search() {
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&&units=metric`;
   axios.get(apiUrl).then(showWeather);
 }
-
 searchBtn.addEventListener("click", search);
 
 //show the info in the current location
@@ -180,6 +219,7 @@ function showCurrentLocation(location) {
   let lon = location.coords.longitude;
   let apiKey = "ac021ab78099db15d109c8b194975aa6";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&&units=metric`;
+  axios.get(apiUrl).then(writeCurrentLocationInfo);
 
   function writeCurrentLocationInfo(locationInfo) {
     console.log(locationInfo);
@@ -205,16 +245,6 @@ function showCurrentLocation(location) {
     let showTemp = document.getElementById("current-temperature");
     showTemp.innerHTML = celsiusTemperature;
 
-    //show wind speed
-    let windSpeed = locationInfo.data.wind.speed;
-    let windSpeedHtml = document.getElementById("wind-speed");
-    windSpeedHtml.innerHTML = `Wind speed: ${windSpeed}m/sec.`;
-
-    //show humidity
-    let humidity = locationInfo.data.main.humidity;
-    let humidityHtml = document.getElementById("humidity");
-    humidityHtml.innerHTML = `Humidity: ${humidity}%`;
-
     //change icon
     let icon = locationInfo.data.weather[0].icon;
     let weatherDescription = locationInfo.data.weather[0].description;
@@ -232,9 +262,57 @@ function showCurrentLocation(location) {
     let lon = locationInfo.data.coord.lon;
     apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
     axios.get(apiUrl).then(showForecast);
-  }
 
-  axios.get(apiUrl).then(writeCurrentLocationInfo);
+    //show forecast
+    function showForecast(response) {
+      console.log(response); //weekly forecast
+      //change icons
+      let forecastElements = document.getElementById("forecast");
+      forecastElements.innerHTML = null;
+
+      let forecast = null;
+
+      //Temperature
+      let maxTemp = null;
+      let minTemp = null;
+
+      let wDay = new Date(response.data.current.dt * 1000);
+      console.log(wDay);
+      let wDayNum = wDay.getDay();
+      let weekdays = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
+      let weekDay = document.getElementById("weekDay");
+      weekDay.innerHTML = null;
+
+      for (let index = 1; index < 7; index++) {
+        forecast = response.data.daily[index];
+        maxTemp = Math.round(response.data.daily[index].temp.max);
+        minTemp = Math.round(response.data.daily[index].temp.min);
+
+        forecastElements.innerHTML += `<div class="circle col-md-1">
+    <div class=col-md-1" id="weekDay">${weekdays[wDayNum + index]}</div >
+    <img id="imgForecast" src="https://openweathermap.org/img/wn/${
+      forecast.weather[0].icon
+    }@2x.png"/>
+    <h3>${maxTemp}℃/${minTemp}℃</h3>
+    </div>`;
+      }
+    }
+  }
 }
 
 function getCurrentLocation() {
