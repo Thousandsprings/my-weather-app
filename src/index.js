@@ -193,7 +193,7 @@ function showForecast(response) {
       minTemp = Math.round(response.data.daily[index].temp.min);
 
       forecastElements.innerHTML += `<div class="circle col-md-1">
-    <div class=col-md-1" id="weekDay">${weekdays[wDayNum + index]}</div >
+    <div class="col-md-1" id="weekDay">${weekdays[wDayNum + index]}</div >
     <img id="imgForecast" src="https://openweathermap.org/img/wn/${
       forecast.weather[0].icon
     }@2x.png"/>
@@ -304,7 +304,7 @@ function showCurrentLocation(location) {
         minTemp = Math.round(response.data.daily[index].temp.min);
 
         forecastElements.innerHTML += `<div class="circle col-md-1">
-    <div class=col-md-1" id="weekDay">${weekdays[wDayNum + index]}</div >
+    <div class="col-md-1" id="weekDay">${weekdays[wDayNum + index]}</div >
     <img id="imgForecast" src="https://openweathermap.org/img/wn/${
       forecast.weather[0].icon
     }@2x.png"/>
